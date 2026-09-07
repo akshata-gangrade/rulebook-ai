@@ -1,0 +1,68 @@
+[
+  {
+    "conflict_id": "CONFLICT-001",
+    "topic": "Medical attendance and examination eligibility",
+    "source_a": {
+      "document_id": "MU-RULEBOOK-2026",
+      "section": "3.2",
+      "rule": "Unless an approved exception applies, students must maintain 75% attendance in a course to be eligible for its semester examination."
+    },
+    "source_b": {
+      "document_id": "MU-RULEBOOK-2026-STUDENT",
+      "section": "11.4",
+      "rule": "Approved medical circumstances may be considered when evaluating a student's attendance record, but approval does not automatically guarantee examination eligibility."
+    },
+    "source_c": {
+      "document_id": "MU-RULEBOOK-2026 attendance_exceptions",
+      "section": "Medical circumstance",
+      "rule": "Students with an approved medical circumstance may be eligible with minimum attendance of 65%."
+    },
+    "conflict_type": "threshold_conflict",
+    "expected_status": "CONFLICT",
+    "explanation": "The general examination eligibility rule establishes a 75% attendance requirement, while the structured medical exception permits examination eligibility at 65% for approved medical circumstances. The corpus does not clearly establish which provision takes precedence."
+  },
+  {
+    "conflict_id": "CONFLICT-002",
+    "topic": "University-authorized activity attendance",
+    "source_a": {
+      "document_id": "MU-RULEBOOK-2026",
+      "section": "3.2",
+      "rule": "Unless an approved exception applies, students must maintain 75% attendance in a course to be eligible for its semester examination."
+    },
+    "source_b": {
+      "document_id": "MU-RULEBOOK-2026-STUDENT",
+      "section": "13.1",
+      "rule": "Students representing the university in an officially authorized activity may request attendance consideration for the period of the authorized activity."
+    },
+    "source_c": {
+      "document_id": "MU-RULEBOOK-2026 attendance_exceptions",
+      "section": "University-authorized activity",
+      "rule": "Students with an approved university-authorized activity may be eligible with minimum attendance of 70%."
+    },
+    "conflict_type": "threshold_conflict",
+    "expected_status": "CONFLICT",
+    "explanation": "The general examination rule requires 75% attendance unless an approved exception applies, while the structured exception table specifies 70% for officially authorized university activities. The corpus does not provide sufficiently explicit precedence language resolving the two requirements."
+  },
+  {
+    "conflict_id": "CONFLICT-003",
+    "topic": "Late examination entry",
+    "source_a": {
+      "document_id": "MU-RULEBOOK-2026",
+      "section": "5.3",
+      "rule": "A student arriving more than 30 minutes after the scheduled examination start time will normally not be permitted to enter the examination room."
+    },
+    "source_b": {
+      "document_id": "MU-RULEBOOK-2026 examination_rules",
+      "section": "EX-002",
+      "rule": "A student attending a special examination session may be permitted to enter up to 45 minutes after the scheduled start time."
+    },
+    "source_c": {
+      "document_id": "MU-RULEBOOK-2026 examination_rules",
+      "section": "EX-003",
+      "rule": "A student experiencing an emergency delay may be considered for admission up to 45 minutes after the scheduled start time."
+    },
+    "conflict_type": "conditional_exception",
+    "expected_status": "CONFLICT",
+    "explanation": "The general examination rule establishes a 30-minute late-entry boundary, while the examination rules table introduces special and emergency circumstances allowing consideration up to 45 minutes. The correct outcome depends on whether the special condition applies."
+  }
+]

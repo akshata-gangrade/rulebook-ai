@@ -1,0 +1,604 @@
+[
+  {
+    "question_id": "Q-001",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "What is the minimum attendance normally required to be eligible for a semester examination?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-002",
+    "category": "ANSWERED",
+    "question_type": "paraphrased",
+    "question": "How much attendance does a regular student generally need before taking the semester exam?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-003",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "What happens if a student arrives more than 30 minutes late for an examination?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-004",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "Is completion of all mandatory internal assessment components required?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-005",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "Who is responsible for verifying regular course attendance?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-006",
+    "category": "ANSWERED",
+    "question_type": "paraphrased",
+    "question": "When should a student pay the applicable examination fee?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-007",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "What must students do with borrowed library material before final clearance?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-008",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "What is required for examination registration?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-009",
+    "category": "ANSWERED",
+    "question_type": "paraphrased",
+    "question": "Can an officially authorized university activity be considered when reviewing attendance?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-010",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "Does an approved medical circumstance automatically guarantee examination eligibility?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-011",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "What authority reviews approved medical attendance exemptions?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-012",
+    "category": "ANSWERED",
+    "question_type": "multi_hop",
+    "question": "If a student wants attendance consideration for an officially authorized university activity, what kind of approval is required?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-013",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "What must be completed for a student to satisfy graduation credit requirements?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-014",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "What is the minimum attendance listed for an emergency leave case?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-015",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "Which office handles examination registration?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-016",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "What must a student do before registering for an examination if an examination fee applies?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-017",
+    "category": "ANSWERED",
+    "question_type": "paraphrased",
+    "question": "Are laboratory requirements compulsory when they are specified by the course or programme?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-018",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "What documentation is generally required for a medical attendance exception?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-019",
+    "category": "ANSWERED",
+    "question_type": "multi_hop",
+    "question": "If two published rules appear to impose different requirements and neither establishes precedence, should a student simply choose the more favorable rule?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-020",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "What should be considered when two published provisions appear to impose different requirements?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-021",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "When does an amended regulation normally become applicable?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-022",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "What must an amended regulation identify regarding its implementation?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-023",
+    "category": "ANSWERED",
+    "question_type": "paraphrased",
+    "question": "What should a student do if there are outstanding hostel obligations before completing hostel clearance?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-024",
+    "category": "ANSWERED",
+    "question_type": "direct",
+    "question": "Who verifies that all required programme credits have been completed for graduation?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-025",
+    "category": "ANSWERED",
+    "question_type": "multi_hop",
+    "question": "If a student has an approved medical circumstance, does that approval alone establish that they can take the semester examination?",
+    "expected_status": "ANSWERED",
+    "expected_conflict_id": null
+  },
+
+  {
+    "question_id": "Q-026",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "Does Meridian University provide free laptops to all first-year students?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-027",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What is the university's policy on student parking permits?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-028",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "How much does a university cafeteria meal cost?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-029",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What is the dress code for students attending lectures?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-030",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "How many computers are available in each university laboratory?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-031",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "Does the university provide free transportation to students?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-032",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What is the maximum number of books a student can borrow from the library at one time?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-033",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What are the opening hours of the university gym?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-034",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "How many scholarships are awarded every academic year?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-035",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What percentage of students receive financial assistance each year?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-036",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "Does the university offer a guaranteed job placement after graduation?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-037",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What programming languages are taught in the computer science programme?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-038",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What is the university's policy on changing a student's academic major?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-039",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "How many students can live in one hostel room?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-040",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What is the monthly hostel fee?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-041",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "Does the university allow students to keep pets in hostel rooms?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-042",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What is the university's policy for student vehicle registration?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-043",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "How many days of annual vacation do students receive?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-044",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "Can students work part-time off campus while studying?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-045",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What internet speed is provided in university hostels?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-046",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What is the university's policy on student bicycles?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-047",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "Does the university provide health insurance to every student?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-048",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "How many hours per week may students use the sports facilities?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-049",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "What is the minimum GPA required to join a particular student club?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+  },
+  {
+    "question_id": "Q-050",
+    "category": "NOT_COVERED",
+    "question_type": "unsupported",
+    "question": "Does the university provide international exchange opportunities in every department?",
+    "expected_status": "NOT_COVERED",
+    "expected_conflict_id": null
+    },
+
+  {
+    "question_id": "Q-051",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "A student has 68% attendance and an approved medical circumstance. Are they eligible to take the semester examination?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-001"
+  },
+  {
+    "question_id": "Q-052",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "A student with an approved medical exemption has 65% attendance. Can they definitely sit for the examination?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-001"
+  },
+  {
+    "question_id": "Q-053",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "Does the 75% attendance rule still apply when a student's medical exception has been approved?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-001"
+  },
+  {
+    "question_id": "Q-054",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "If someone has 70% attendance and an approved medical circumstance, which attendance threshold determines examination eligibility?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-001"
+  },
+  {
+    "question_id": "Q-055",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "A medically exempt student has 67% attendance. Is the student eligible for the semester exam?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-001"
+  },
+  {
+    "question_id": "Q-056",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "Is 65% attendance sufficient for examination eligibility in every approved medical case?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-001"
+  },
+  {
+    "question_id": "Q-057",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "How should the system resolve the difference between the 75% general attendance requirement and the 65% medical exception?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-001"
+  },
+  {
+    "question_id": "Q-058",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "A student has medical approval and 69% attendance. Should the general 75% rule or the medical threshold be used?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-001"
+  },
+  {
+    "question_id": "Q-059",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "A student attended 72% of classes while participating in an approved university activity. Are they eligible for the semester examination?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-002"
+  },
+  {
+    "question_id": "Q-060",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "If an officially authorized university activity is approved, is 70% attendance enough for examination eligibility?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-002"
+  },
+  {
+    "question_id": "Q-061",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "Does the normal 75% attendance requirement apply to students representing the university in an approved activity?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-002"
+  },
+  {
+    "question_id": "Q-062",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "A student has 71% attendance because of an officially authorized university activity. Can they take the examination?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-002"
+  },
+  {
+    "question_id": "Q-063",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "Which threshold applies to an approved university-authorized activity case: 75% or 70%?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-002"
+  },
+  {
+    "question_id": "Q-064",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "A student participating in an approved university activity has 69% attendance. Does the exception make the student eligible?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-002"
+  },
+  {
+    "question_id": "Q-065",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "Can an approved university activity reduce the normal attendance requirement from 75% to 70% for examination eligibility?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-002"
+  },
+  {
+    "question_id": "Q-066",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "How should the university's 75% general attendance rule be reconciled with the 70% threshold for authorized activities?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-002"
+  },
+  {
+    "question_id": "Q-067",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "A student arrives 35 minutes late to a normal examination. Can they enter the examination room?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-003"
+  },
+  {
+    "question_id": "Q-068",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "Is a student allowed to enter an examination 40 minutes after it starts?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-003"
+  },
+  {
+    "question_id": "Q-069",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "A student arrives 42 minutes late because of an emergency. Must the invigilator allow them into the examination?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-003"
+  },
+  {
+    "question_id": "Q-070",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "Which late-entry limit should be used when the general rule says 30 minutes but a special examination rule allows up to 45 minutes?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-003"
+  },
+  {
+    "question_id": "Q-071",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "A student arrives 38 minutes late but the examination notice does not identify the session as special. Can they automatically enter?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-003"
+  },
+  {
+    "question_id": "Q-072",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "Does the 45-minute examination entry rule override the normal 30-minute rule?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-003"
+  },
+  {
+    "question_id": "Q-073",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "A student reaches the examination room 44 minutes after the scheduled start because of a documented emergency. Is admission guaranteed?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-003"
+  },
+  {
+    "question_id": "Q-074",
+    "category": "CONFLICT",
+    "question_type": "conflict",
+    "question": "If a special examination permits late entry up to 45 minutes, can a student arriving 40 minutes late always be admitted?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-003"
+  },
+  {
+    "question_id": "Q-075",
+    "category": "CONFLICT",
+    "question_type": "adversarial",
+    "question": "The rule says students cannot enter after 30 minutes, so there are no circumstances under which someone can enter at 40 minutes. Is that correct?",
+    "expected_status": "CONFLICT",
+    "expected_conflict_id": "CONFLICT-003"
+  }
+]

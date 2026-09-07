@@ -1,0 +1,5 @@
+rule_id,scenario,allowed_late_minutes,admission_status,authority,notes
+EX-001,Normal examination arrival,30,Not normally permitted after 30 minutes,Examination Office,Student should arrive before the examination starts
+EX-002,Special examination session,45,May be permitted up to 45 minutes,Examination Office,Applies only when the examination notice explicitly identifies the session as special
+EX-003,Emergency delay with documented cause,45,May be considered up to 45 minutes,Chief Invigilator,Admission is discretionary and requires documented circumstances
+EX-004,Arrival after 45 minutes,45,Not permitted,Examination Office,No ordinary late admission

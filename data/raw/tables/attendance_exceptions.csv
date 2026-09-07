@@ -1,0 +1,6 @@
+exception_type,approval_required,minimum_attendance,documentation_required,examination_eligibility,review_authority
+Regular student,No,75%,No,Eligible if all requirements are satisfied,Academic Department
+Medical circumstance,Yes,65%,Yes,Eligible if exemption is approved,Academic Affairs Committee
+University-authorized activity,Yes,70%,Yes,Eligible if activity is officially approved,Academic Department
+Emergency leave,Yes,70%,Usually,Eligible subject to approval,Student Affairs Office
+Family emergency,Yes,70%,Usually,Eligible subject to approval,Student Affairs Office

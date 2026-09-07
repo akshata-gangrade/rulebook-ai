@@ -1,0 +1,9 @@
+requirement_category,requirement,threshold_or_rule,verification_authority,student_action
+Attendance,Regular course attendance,Minimum 75%,Academic Department,Monitor attendance throughout semester
+Internal Assessment,Required coursework,All mandatory components must be completed,Course Instructor,Complete assessments by deadlines
+Examination Registration,Registration submission,Must be completed within published period,Examination Office,Submit examination registration
+Examination Fee,Applicable examination fee,Must be paid within registration period,Finance Office,Pay before registration deadline
+Laboratory Work,Compulsory laboratory requirements,As specified by course or programme,Academic Department,Complete required practical work
+Graduation,Credit completion,All required programme credits must be completed,Academic Department,Complete outstanding courses
+Library Clearance,Outstanding borrowed material,Must be resolved before final clearance,Library Office,Return material or resolve applicable charge
+Hostel Clearance,Outstanding hostel obligations,Must be resolved where applicable,Hostel Administration,Complete hostel clearance
