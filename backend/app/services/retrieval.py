@@ -27,7 +27,12 @@ class RetrievedChunk:
 
 class RetrievalService:
     """
-    Retrieves relevant rulebook chunks using semantic and keyword search.
+    Retrieves relevant rulebook chunks using hybrid search.
+
+    Hybrid retrieval combines:
+    1. Semantic search for meaning-based matches.
+    2. Keyword search for exact rulebook terminology,
+       thresholds, and structured table entries.
     """
 
     def __init__(
@@ -46,14 +51,19 @@ class RetrievalService:
         top_k: int | None = None,
     ) -> list[RetrievedChunk]:
         """
-        Retrieve relevant chunks using both semantic and keyword search.
+        Retrieve relevant chunks using semantic and keyword search.
         """
         if not question.strip():
             raise ValueError("Question cannot be empty.")
 
         k = top_k or self.settings.top_k
 
-        # Semantic retrieval.
+        if k <= 0:
+            raise ValueError("top_k must be greater than 0.")
+
+        # ---------------------------------------------------------
+        # 1. Semantic retrieval
+        # ---------------------------------------------------------
         query_embedding = self.embedding_service.embed_query(question)
 
         semantic_results = self.vector_store.search(
@@ -61,9 +71,13 @@ class RetrievalService:
             top_k=k,
         )
 
-        retrieved = self._parse_results(semantic_results)
+        semantic_chunks = self._parse_results(
+            semantic_results
+        )
 
-        # Keyword retrieval.
+        # ---------------------------------------------------------
+        # 2. Keyword retrieval
+        # ---------------------------------------------------------
         keywords = self._extract_keywords(question)
 
         keyword_results = self.vector_store.keyword_search(
@@ -71,40 +85,95 @@ class RetrievalService:
             limit=k,
         )
 
-        existing_ids = {
-            chunk.chunk_id
-            for chunk in retrieved
-        }
+        # ---------------------------------------------------------
+        # 3. Merge results without duplicates
+        # ---------------------------------------------------------
+        merged: dict[str, RetrievedChunk] = {}
+
+        for chunk in semantic_chunks:
+            merged[chunk.chunk_id] = chunk
 
         for result in keyword_results:
             chunk_id = result["id"]
 
-            if chunk_id in existing_ids:
+            if chunk_id in merged:
                 continue
 
             metadata = result["metadata"]
 
-            retrieved.append(
-                RetrievedChunk(
-                    chunk_id=chunk_id,
-                    text=result["document"],
-                    document_id=metadata["document_id"],
-                    source_file=metadata["source_file"],
-                    file_type=metadata["file_type"],
-                    section=metadata.get("section"),
-                    page=metadata.get("page"),
-                    distance=1.0,
-                    similarity=0.30,
-                )
+            merged[chunk_id] = RetrievedChunk(
+                chunk_id=chunk_id,
+                text=result["document"],
+                document_id=metadata["document_id"],
+                source_file=metadata["source_file"],
+                file_type=metadata["file_type"],
+                section=metadata.get("section"),
+                page=metadata.get("page"),
+                distance=1.0,
+                similarity=0.30,
             )
 
-        return retrieved[:k]
+        candidates = list(merged.values())
+
+        # ---------------------------------------------------------
+        # 4. Keep a balance of semantic + keyword results
+        # ---------------------------------------------------------
+        semantic_count = max(1, k // 2)
+
+        semantic_candidates = [
+            chunk
+            for chunk in candidates
+            if chunk.distance != 1.0
+        ]
+
+        keyword_candidates = [
+            chunk
+            for chunk in candidates
+            if chunk.distance == 1.0
+        ]
+
+        semantic_candidates.sort(
+            key=lambda chunk: chunk.similarity,
+            reverse=True,
+        )
+
+        selected = semantic_candidates[:semantic_count]
+
+        selected_ids = {
+            chunk.chunk_id
+            for chunk in selected
+        }
+
+        remaining_slots = k - len(selected)
+
+        remaining_candidates = [
+            chunk
+            for chunk in candidates
+            if chunk.chunk_id not in selected_ids
+        ]
+
+        # Prefer keyword matches for the remaining slots.
+        remaining_candidates.sort(
+            key=lambda chunk: (
+                chunk.distance != 1.0,
+                -chunk.similarity,
+            )
+        )
+
+        selected.extend(
+            remaining_candidates[:remaining_slots]
+        )
+
+        return selected[:k]
 
     @staticmethod
-    def _extract_keywords(question: str) -> list[str]:
+    def _extract_keywords(
+        question: str,
+    ) -> list[str]:
         """
         Extract meaningful keywords for lexical retrieval.
         """
+
         stop_words = {
             "what",
             "when",
@@ -149,12 +218,28 @@ class RetrievalService:
             question.lower(),
         )
 
-        return [
-            word
-            for word in words
-            if len(word) >= 4
-            and word not in stop_words
-        ]
+        keywords: list[str] = []
+
+        for word in words:
+            if len(word) < 4:
+                continue
+
+            if word in stop_words:
+                continue
+
+            keywords.append(word)
+
+            # Basic singular/plural normalization.
+            if word.endswith("ies") and len(word) > 4:
+                keywords.append(
+                    word[:-3] + "y"
+                )
+            elif word.endswith("s") and len(word) > 4:
+                keywords.append(
+                    word[:-1]
+                )
+
+        return list(dict.fromkeys(keywords))
 
     @staticmethod
     def _parse_results(
@@ -163,14 +248,35 @@ class RetrievalService:
         """
         Convert ChromaDB results into application-level objects.
         """
-        ids = results.get("ids", [[]])[0]
-        documents = results.get("documents", [[]])[0]
-        metadatas = results.get("metadatas", [[]])[0]
-        distances = results.get("distances", [[]])[0]
+
+        ids = results.get(
+            "ids",
+            [[]],
+        )[0]
+
+        documents = results.get(
+            "documents",
+            [[]],
+        )[0]
+
+        metadatas = results.get(
+            "metadatas",
+            [[]],
+        )[0]
+
+        distances = results.get(
+            "distances",
+            [[]],
+        )[0]
 
         retrieved: list[RetrievedChunk] = []
 
-        for chunk_id, text, metadata, distance in zip(
+        for (
+            chunk_id,
+            text,
+            metadata,
+            distance,
+        ) in zip(
             ids,
             documents,
             metadatas,
@@ -178,7 +284,10 @@ class RetrievalService:
         ):
             similarity = max(
                 0.0,
-                min(1.0, 1.0 - distance),
+                min(
+                    1.0,
+                    1.0 - float(distance),
+                ),
             )
 
             retrieved.append(
@@ -190,7 +299,7 @@ class RetrievalService:
                     file_type=metadata["file_type"],
                     section=metadata.get("section"),
                     page=metadata.get("page"),
-                    distance=distance,
+                    distance=float(distance),
                     similarity=similarity,
                 )
             )

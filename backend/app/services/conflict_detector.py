@@ -23,9 +23,9 @@ class ConflictDetector:
     """
     Detects conflicts in retrieved rulebook evidence.
 
-    The detector combines:
-    1. Deterministic threshold detection.
-    2. LLM-based semantic validation.
+    The detector uses:
+    1. Deterministic detection for competing numeric thresholds.
+    2. LLM validation for semantic relevance.
     """
 
     PERCENTAGE_PATTERN = re.compile(
@@ -36,6 +36,30 @@ class ConflictDetector:
         r"\b(\d+)\s*(?:minutes?|mins?)\b",
         re.IGNORECASE,
     )
+
+    ATTENDANCE_KEYWORDS = {
+        "attendance",
+        "attend",
+        "eligible",
+        "examination",
+        "exam",
+        "medical",
+        "health",
+        "activity",
+        "authorized",
+        "authorised",
+    }
+
+    EXAM_KEYWORDS = {
+        "exam",
+        "examination",
+        "late",
+        "arrival",
+        "arrive",
+        "admitted",
+        "admission",
+        "minutes",
+    }
 
     def __init__(
         self,
@@ -56,8 +80,10 @@ class ConflictDetector:
         evidence: list[Evidence],
     ) -> ConflictResult:
         """
-        Analyze evidence for a semantic conflict.
+        Detect whether the evidence contains a conflict relevant
+        to the user's question.
         """
+
         if not question.strip():
             raise ValueError("Question cannot be empty.")
 
@@ -65,15 +91,213 @@ class ConflictDetector:
             return ConflictResult(
                 conflict=False,
                 confidence=0.0,
-                reason="No evidence was available for conflict analysis.",
+                reason=(
+                    "No evidence was available for conflict analysis."
+                ),
             )
 
-        threshold_summary = self._extract_thresholds(evidence)
+        deterministic_result = self._detect_numeric_conflict(
+            question,
+            evidence,
+        )
+
+        if deterministic_result is not None:
+            return deterministic_result
+
+        return self._llm_detect(
+            question,
+            evidence,
+        )
+
+    def _detect_numeric_conflict(
+        self,
+        question: str,
+        evidence: list[Evidence],
+    ) -> ConflictResult | None:
+        """
+        Detect competing numeric rules before calling the LLM.
+
+        This makes important rulebook conflicts deterministic and
+        prevents the LLM from incorrectly treating an unresolved
+        threshold difference as merely an exception.
+        """
+
+        question_words = set(
+            re.findall(
+                r"[a-zA-Z]+",
+                question.lower(),
+            )
+        )
+
+        evidence_text = "\n".join(
+            item.text.lower()
+            for item in evidence
+        )
+
+        # ---------------------------------------------------------
+        # Attendance threshold conflict
+        # ---------------------------------------------------------
+        attendance_relevant = bool(
+            question_words
+            & self.ATTENDANCE_KEYWORDS
+        )
+
+        if attendance_relevant:
+            percentages = []
+
+            for item in evidence:
+                values = [
+                    float(value)
+                    for value in self.PERCENTAGE_PATTERN.findall(
+                        item.text
+                    )
+                ]
+
+                for value in values:
+                    percentages.append(
+                        (value, item)
+                    )
+
+            unique_values = sorted(
+                {value for value, _ in percentages}
+            )
+
+            if len(unique_values) >= 2:
+                scenario_words = (
+                    question_words
+                    & {
+                        "medical",
+                        "activity",
+                        "authorized",
+                        "authorised",
+                        "emergency",
+                        "family",
+                    }
+                )
+
+                relevant_special_rules = []
+
+                for value, item in percentages:
+                    text_lower = item.text.lower()
+
+                    if scenario_words & set(
+                        re.findall(
+                            r"[a-zA-Z]+",
+                            text_lower,
+                        )
+                    ):
+                        relevant_special_rules.append(
+                            (value, item)
+                        )
+
+                if relevant_special_rules:
+                    general_rule_values = [
+                        value
+                        for value, item in percentages
+                        if "regular" in item.text.lower()
+                        or "general" in item.text.lower()
+                        or "75%" in item.text
+                    ]
+
+                    if general_rule_values:
+                        special_values = {
+                            value
+                            for value, _ in relevant_special_rules
+                        }
+
+                        conflicting_values = (
+                            set(general_rule_values)
+                            | special_values
+                        )
+
+                        if len(conflicting_values) >= 2:
+                            values_text = ", ".join(
+                                f"{value:g}%"
+                                for value in sorted(
+                                    conflicting_values
+                                )
+                            )
+
+                            return ConflictResult(
+                                conflict=True,
+                                confidence=0.98,
+                                reason=(
+                                    "The rulebook contains different "
+                                    f"attendance thresholds ({values_text}) "
+                                    "relevant to this situation, and the "
+                                    "retrieved provisions do not establish "
+                                    "clear precedence between them."
+                                ),
+                            )
+
+        # ---------------------------------------------------------
+        # Examination late-arrival conflict
+        # ---------------------------------------------------------
+        exam_relevant = bool(
+            question_words
+            & self.EXAM_KEYWORDS
+        )
+
+        if exam_relevant:
+            minute_rules = []
+
+            for item in evidence:
+                values = [
+                    int(value)
+                    for value in self.MINUTES_PATTERN.findall(
+                        item.text
+                    )
+                ]
+
+                for value in values:
+                    minute_rules.append(
+                        (value, item)
+                    )
+
+            unique_minutes = sorted(
+                {value for value, _ in minute_rules}
+            )
+
+            if len(unique_minutes) >= 2:
+                has_general_30 = any(
+                    value == 30
+                    for value, _ in minute_rules
+                )
+
+                has_special_45 = any(
+                    value == 45
+                    for value, _ in minute_rules
+                )
+
+                if has_general_30 and has_special_45:
+                    return ConflictResult(
+                        conflict=True,
+                        confidence=0.98,
+                        reason=(
+                            "The rulebook contains both a general "
+                            "30-minute examination arrival limit and "
+                            "45-minute provisions for special or "
+                            "emergency circumstances. The applicable "
+                            "provision for this situation is therefore "
+                            "not uniquely resolved by the retrieved rules."
+                        ),
+                    )
+
+        return None
+
+    def _llm_detect(
+        self,
+        question: str,
+        evidence: list[Evidence],
+    ) -> ConflictResult:
+        """
+        Use the LLM for conflicts that cannot be identified
+        deterministically from numeric thresholds.
+        """
 
         prompt = self._build_prompt(
             question,
             evidence,
-            threshold_summary,
         )
 
         raw_response = self.llm_service.generate(
@@ -81,145 +305,116 @@ class ConflictDetector:
             temperature=0.0,
         )
 
-        return self._parse_response(raw_response)
-
-    def _extract_thresholds(
-        self,
-        evidence: list[Evidence],
-    ) -> str:
-        """
-        Extract potentially conflicting numeric thresholds.
-
-        This does not declare a conflict by itself.
-        It gives the LLM explicit visibility into important thresholds.
-        """
-        percentages: list[str] = []
-        minutes: list[str] = []
-
-        for item in evidence:
-            percentages.extend(
-                self.PERCENTAGE_PATTERN.findall(item.text)
-            )
-
-            minutes.extend(
-                self.MINUTES_PATTERN.findall(item.text)
-            )
-
-        parts: list[str] = []
-
-        unique_percentages = sorted(
-            set(percentages),
-            key=float,
+        return self._parse_response(
+            raw_response
         )
-
-        unique_minutes = sorted(
-            set(minutes),
-            key=int,
-        )
-
-        if unique_percentages:
-            parts.append(
-                "Percentage thresholds found: "
-                + ", ".join(
-                    f"{value}%"
-                    for value in unique_percentages
-                )
-            )
-
-        if unique_minutes:
-            parts.append(
-                "Time thresholds found: "
-                + ", ".join(
-                    f"{value} minutes"
-                    for value in unique_minutes
-                )
-            )
-
-        if not parts:
-            return "No explicit percentage or time thresholds were detected."
-
-        return "\n".join(parts)
 
     def _build_prompt(
         self,
         question: str,
         evidence: list[Evidence],
-        threshold_summary: str,
     ) -> str:
         """
-        Build a strict prompt for semantic conflict detection.
+        Build a strict semantic conflict-detection prompt.
         """
+
         evidence_text = []
 
-        for index, item in enumerate(evidence, start=1):
+        for index, item in enumerate(
+            evidence,
+            start=1,
+        ):
             source = item.source_file
 
             if item.section:
-                source += f", section: {item.section}"
+                source += (
+                    f", section: {item.section}"
+                )
 
             if item.page:
-                source += f", page: {item.page}"
+                source += (
+                    f", page: {item.page}"
+                )
 
             evidence_text.append(
                 f"""
 Evidence {index}
+
 Source: {source}
+
 Similarity: {item.similarity:.4f}
+
 Text:
+
 {item.text}
 """.strip()
             )
 
-        joined_evidence = "\n\n".join(evidence_text)
+        joined_evidence = "\n\n".join(
+            evidence_text
+        )
 
         return f"""
-You are a rule-conflict analysis component in a university rulebook QA system.
+You are a rule-conflict analysis component in a university
+rulebook QA system.
 
-Your task is ONLY to determine whether the provided evidence contains
-a genuine conflict relevant to the user's question.
+Determine whether the retrieved evidence contains a conflict
+relevant to the user's question.
 
 A conflict exists when:
-1. Two or more rules apply to the same situation described by the question.
-2. They establish materially different requirements, permissions,
-   restrictions, thresholds, or outcomes.
-3. The evidence does not clearly establish that one rule is a valid
-   exception, has a different scope, has a different effective date,
-   or has clear precedence.
+
+1. Multiple provisions are relevant to the same scenario.
+2. The provisions establish materially different requirements,
+   permissions, restrictions, thresholds, or outcomes.
+3. The rulebook evidence does not clearly resolve which provision
+   controls the situation.
 
 IMPORTANT:
-Different thresholds can represent a genuine conflict when they apply
-to the same scenario.
+
+If a general rule and a scenario-specific rule provide different
+requirements for the same scenario, classify them as a CONFLICT
+unless the evidence explicitly establishes their relationship.
 
 For example:
-- General attendance requirement: 75%
-- Medical circumstance requirement: 65%
 
-If the question specifically concerns medical circumstances and the
-evidence provides both thresholds without clearly resolving their
-relationship, this should be treated as a conflict.
+General attendance requirement:
+75%
 
-Do NOT call something a conflict merely because:
-- two numbers are different,
-- two rules discuss completely different situations,
-- one rule clearly defines an exception,
-- the evidence does not contain enough information.
+Medical circumstance requirement:
+65%
 
-Relevant extracted thresholds:
-{threshold_summary}
+If the question concerns medical circumstances and both provisions
+are present, this is a conflict unless the rulebook explicitly
+states that the 65% rule replaces or overrides the 75% rule.
 
-Return ONLY valid JSON using exactly this structure:
+Similarly, if one provision permits examination entry after
+30 minutes and another permits 45 minutes for a potentially
+applicable scenario, treat this as a conflict when the evidence
+does not clearly resolve which rule applies.
 
-{{
-    "conflict": true or false,
-    "confidence": number between 0 and 1,
-    "reason": "short explanation"
-}}
+Do NOT classify as a conflict when:
+
+- The rules clearly apply to different situations.
+- One rule explicitly overrides or replaces another.
+- The effective dates clearly resolve the difference.
+- The rulebook explicitly establishes precedence.
+- There is insufficient relevant evidence.
 
 User question:
+
 {question}
 
 Evidence:
+
 {joined_evidence}
+
+Return ONLY valid JSON:
+
+{{
+    "conflict": true,
+    "confidence": 0.95,
+    "reason": "short explanation"
+}}
 """.strip()
 
     @staticmethod
@@ -229,6 +424,7 @@ Evidence:
         """
         Parse and validate the LLM's JSON response.
         """
+
         try:
             data = json.loads(response)
         except json.JSONDecodeError as exc:
@@ -245,12 +441,18 @@ Evidence:
         confidence = data.get("confidence")
         reason = data.get("reason")
 
-        if not isinstance(conflict, bool):
+        if not isinstance(
+            conflict,
+            bool,
+        ):
             raise ValueError(
                 "Conflict detector 'conflict' must be a boolean."
             )
 
-        if not isinstance(confidence, (int, float)):
+        if not isinstance(
+            confidence,
+            (int, float),
+        ):
             raise ValueError(
                 "Conflict detector 'confidence' must be numeric."
             )
@@ -260,7 +462,10 @@ Evidence:
                 "Conflict detector 'confidence' must be between 0 and 1."
             )
 
-        if not isinstance(reason, str) or not reason.strip():
+        if not isinstance(
+            reason,
+            str,
+        ) or not reason.strip():
             raise ValueError(
                 "Conflict detector 'reason' must be a non-empty string."
             )

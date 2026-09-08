@@ -44,7 +44,7 @@ def get_pipeline(
     llm_service = LLMService(settings)
 
     coverage_detector = CoverageDetector(
-        similarity_threshold=0.30,
+        similarity_threshold=0.35,
     )
 
     conflict_detector = ConflictDetector(
@@ -76,6 +76,7 @@ def ask_question(
     """
     Answer a question using the rulebook evidence pipeline.
     """
+
     (
         retrieval_service,
         evidence_service,
@@ -84,22 +85,41 @@ def ask_question(
         answer_generator,
     ) = pipeline
 
+    settings = get_settings()
+
     question = request.question.strip()
 
+    # ---------------------------------------------------------
     # 1. Retrieve relevant chunks.
+    # ---------------------------------------------------------
     retrieved_chunks = retrieval_service.retrieve(
         question,
         top_k=12,
     )
 
-    # 2. Convert retrieved chunks into citation-ready evidence.
-    evidence = evidence_service.build_evidence(
+    # ---------------------------------------------------------
+    # 2. Build two evidence sets.
+    #
+    # Answer evidence is stricter.
+    # Conflict evidence is broader so that competing rules
+    # with slightly lower semantic similarity are not missed.
+    # ---------------------------------------------------------
+    answer_evidence = evidence_service.build_evidence(
         retrieved_chunks,
         min_similarity=0.25,
     )
 
+    conflict_evidence = evidence_service.build_evidence(
+        retrieved_chunks,
+        min_similarity=0.20,
+    )
+
+    # ---------------------------------------------------------
     # 3. Determine whether the rulebook covers the question.
-    coverage = coverage_detector.detect(evidence)
+    # ---------------------------------------------------------
+    coverage = coverage_detector.detect(
+        answer_evidence,
+    )
 
     if not coverage.covered:
         return AskResponse(
@@ -119,17 +139,21 @@ def ask_question(
                     source_file=item.source_file,
                     similarity=item.similarity,
                 )
-                for item in evidence
+                for item in answer_evidence
             ],
         )
 
-    # 4. Check covered questions for conflicting rules.
+    # ---------------------------------------------------------
+    # 4. Check for conflicts using broader evidence.
+    # ---------------------------------------------------------
     conflict = conflict_detector.detect(
         question=question,
-        evidence=evidence,
+        evidence=conflict_evidence,
     )
 
-    # 5. Determine the final status.
+    # ---------------------------------------------------------
+    # 5. Return CONFLICT when competing rules are detected.
+    # ---------------------------------------------------------
     if (
         conflict.conflict
         and conflict.confidence >= settings.conflict_threshold
@@ -148,14 +172,16 @@ def ask_question(
                     source_file=item.source_file,
                     similarity=item.similarity,
                 )
-                for item in evidence
+                for item in conflict_evidence
             ],
         )
 
+    # ---------------------------------------------------------
     # 6. Generate a grounded answer.
+    # ---------------------------------------------------------
     answer = answer_generator.generate(
         question=question,
-        evidence=evidence,
+        evidence=answer_evidence,
     )
 
     return AskResponse(
@@ -172,6 +198,6 @@ def ask_question(
                 source_file=item.source_file,
                 similarity=item.similarity,
             )
-            for item in evidence
+            for item in answer_evidence
         ],
     )
