@@ -169,8 +169,8 @@ class CoverageDetector:
         )
 
         confidence = (
-            0.70
-            + (0.29 * normalized_gap)
+            0.94
+            + (0.05 * normalized_gap)
         )
 
         return round(

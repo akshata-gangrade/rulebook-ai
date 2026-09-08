@@ -7,6 +7,7 @@ const SUGGESTIONS = [
   "What attendance percentage is required to sit an exam?",
   "What happens if I miss an exam for a family wedding?",
   "Can a committee waive the attendance requirement?",
+  "How late can I arrive for an exam?",
 ];
 
 const VERDICT_COPY = {
@@ -191,8 +192,7 @@ function App() {
           {!result && !loading && (
             <div className="empty-state">
               <p className="empty-state-lead">
-                Ask a question above. The cited clauses will show up here,
-                alongside which of three things happened.
+                Ask a question to see the answer, supporting clauses, and outcome.
               </p>
               <ul className="legend">
                 <li>
@@ -277,7 +277,8 @@ function App() {
                 </p>
               )}
 
-              {result.evidence?.length > 0 && (
+              {statusKey(result.status) !== "NOT_COVERED" &&
+                result.evidence?.length > 0 && (
                 <div className="evidence">
                   <div className="evidence-heading">
                     <h2>Evidence</h2>
